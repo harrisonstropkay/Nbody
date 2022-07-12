@@ -1,7 +1,7 @@
 
 TODO
 
--   give options for tale (finite length, dots get smaller later)
+-   give options for trail (finite length, dots get smaller later)
 -   overlay paths equally (each body should be drawn last)
 -   different sizes & factor mass into equation -> mass is proportional to radius squared
 -   drag to create size

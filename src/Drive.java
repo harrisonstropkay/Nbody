@@ -1,16 +1,16 @@
+
+//much credit to Chris Bailey-Kellogg for GUI and listeners
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import java.awt.geom.Point2D;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Drive extends JFrame {
-    // from DrawingGUI
+
     public JComponent canvas;						// handles graphics display
     protected int width, height;					// the size of the drawing window
     protected Timer timer;							// one delay-driven event
-    private static final int delay = 40;			// default delay for the timer (milliseconds)
+    private static final int delay = 30;			// default delay for the timer (milliseconds)
 
     private NBody nBody;
 
@@ -41,7 +41,7 @@ public class Drive extends JFrame {
                 handleMouseMotion(event.getPoint().x, event.getPoint().y);
             }
         });
-        addKeyListener(new KeyAdapter() {
+        canvas.addKeyListener(new KeyAdapter() {
             public void keyTyped(KeyEvent event) {
                 handleKeyPress(event.getKeyChar());
             }
@@ -61,17 +61,6 @@ public class Drive extends JFrame {
         pack();
         setVisible(true);
 
-        startTimer();
-
-
-
-    }
-
-    /**
-     * Start the timer running.
-     */
-
-    public void startTimer() {
         timer.start();
     }
 
@@ -79,34 +68,21 @@ public class Drive extends JFrame {
         nBody.draw(g);
     }
 
-    /**
-     * Method to handle a mouse press, to be overridden by subclasses.
-     * @param x		x coordinate of mouse press
-     * @param y		y coordinate of mouse press
-     */
+
     public void handleMousePress(int x, int y) {
-        nBody.addToBodies(new Body(new Point2D.Double(x, y), new Color((int) (16777216 * Math.random()))));
+        nBody.addToBodies(new Body(new Pair(x, y), new Color((int) (16777216 * Math.random())), false, 0));
         repaint();
     }
 
-    /**
-     * Method to handle mouse motion, to be overridden by subclasses.
-     * @param x		x coordinate of mouse
-     * @param y		y coordinate of mouse
-     */
+
     public void handleMouseMotion(int x, int y) {
     }
 
-    /**
-     * Method to handle a key press, to be overridden by subclasses.
-     * @param key	the key that was pressed
-     */
+
     public void handleKeyPress(char key) {
     }
 
-    /**
-     * Method to respond to the timer going off, to be overridden by subclasses.
-     */
+
     public void handleTimer() {
         nBody.update();
         repaint();
@@ -115,7 +91,7 @@ public class Drive extends JFrame {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                new Drive("test", 800,600);
+                new Drive("test", 800,800);
             }
         });
     }

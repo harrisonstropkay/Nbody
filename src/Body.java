@@ -4,25 +4,35 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+
+
 public class Body {
 
-    private Point2D.Double loc;
-    private Point2D.Double dir;
-    private static double g = .5;
-    private List<Point2D.Double> trail;
+    private Pair loc;
+    private Pair dir;
+    private static final double g = 0.5;
+    private List<Pair> trail;
     private Color color;
-    private int bodyRadius = 6;
+    private int bodyRadius = 5;
+
     private int trailRadius = 2;
+    private boolean infiniteTrail;
+    private int trailLength;
 
 
-    public Body(Point2D.Double loc, Color color) {
+
+
+    public Body(Pair loc, Color color, boolean infiniteTrail, int trailLength) {
         this.loc = loc;
-        dir = new Point2D.Double(Math.random() - 0.5,Math.random() - 0.5);
+        dir = new Pair(0,0);         //Math.random() - 0.5,Math.random() - 0.5);
         trail = new ArrayList<>();
         this.color = color;
+
+        this.infiniteTrail = infiniteTrail;
+        this.trailLength = trailLength;
     }
 
-    public Point2D.Double getLoc() {
+    public Pair getLoc() {
         return loc;
     }
 
@@ -34,8 +44,10 @@ public class Body {
         return loc.y;
     }
 
-    public void addToTrail(Point2D.Double point) {
+    public void addToTrail(Pair point) {
         trail.add(point);
+        if (!infiniteTrail && trail.size() > trailLength)
+            trail.remove(0);
     }
 
     public void updateDir(Set<Body> bodies) {
@@ -59,13 +71,13 @@ public class Body {
     }
 
     public void updateLoc() {
-        addToTrail(new Point2D.Double(loc.x, loc.y));
+        addToTrail(new Pair(loc.x, loc.y));
 
         loc.x += dir.x;
         loc.y += dir.y;
     }
 
-    public static double distanceSquared(Point2D.Double p1, Point2D.Double p2) {
+    public static double distanceSquared(Pair p1, Pair p2) {
         return Math.pow((p2.x - p1.x), 2) + Math.pow((p2.y - p1.y), 2);
     }
 
@@ -76,7 +88,7 @@ public class Body {
         g.fillOval((int) (loc.x - bodyRadius), (int) loc.y - bodyRadius, bodyRadius * 2, bodyRadius * 2);
 
         //draw trail
-        for (Point2D.Double point: trail) {
+        for (Pair point: trail) {
             g.fillOval((int) point.x - trailRadius, (int) point.y - trailRadius, trailRadius * 2, trailRadius * 2);
         }
         /* lines
